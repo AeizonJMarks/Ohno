@@ -28,16 +28,69 @@ synopsis-block # AI analysis (mandatory)
 contents-block # Human content
 ```
 
-The order is critical - SYNOPSIS must sit between META and CONTENTS to serve as an objective analysis barrier.
+Example of a complete .ohno file:
+```
+#!/usr/bin/env ohno
+
+#### META: Title: Authentication System
+#### META: Version: 1.0.0
+#### META: Author: Development Team
+
+#### SYNOPSIS: Authentication system implements OAuth2.0
+#### SYNOPSIS: Critical security component with unpatched vulnerabilities
+#### SYNOPSIS: Memory leak detected in token validation
+#### SYNOPSIS: API endpoints lack proper rate limiting
+
+#### CONTENTS:
+### SECTION: initialization
+Implementation details...
+### END: SECTION: initialization
+```
+
+#### Integration with Source Files
+Source files integrate Ohno using native comment syntax:
+
+```python
+#!/usr/bin/env python3
+# #### META: Title: Auth Implementation
+# #### META: Version: 2.0.0
+# #### META: Author: Dev Team
+
+# #### SYNOPSIS: Python OAuth implementation with security flaws
+# #### SYNOPSIS: Token validation bypass possible
+# #### SYNOPSIS: Rate limiting incorrectly implemented
+
+# #### CONTENTS:
+# ### SECTION: imports
+from oauth import OAuth
+# ### END: SECTION: imports
+```
 
 ### Required Headers
 
 #### META Block (Human Context)
 Provides file metadata and human context:
+
+Required Fields:
+- Title: Document purpose/identity
+- Version: Document version number
+- Author: Content owner(s)
+- Path: File location in project
+
+Optional Fields:
+- Dependencies
+- License
+- Status
+- Custom fields
+
+Example:
 ```
-#### META: Title: Authentication System
+#### META: Title: Core Authentication
 #### META: Version: 1.0.0
-#### META: Author: Development Team
+#### META: Author: Security Team
+#### META: Path: src/auth/core.ohno
+#### META: Dependencies: utils.ohno
+#### META: Status: stable
 ```
 
 #### SYNOPSIS Block (AI Truth Layer)
@@ -65,17 +118,125 @@ The SYNOPSIS block serves as:
 5. Trust Enforcer - Prevents human manipulation
 
 #### CONTENTS Section
-Contains the actual implementation details:
+The CONTENTS section organizes the main document content:
+
+Structure:
 ```
 #### CONTENTS:
-### SECTION: initialization
-Implementation details...
-### END: SECTION: initialization
+### SECTION: <identifier>
+Content...
+### END: SECTION: <identifier>
+
+### SECTION: <identifier>
+Content...
+### END: SECTION: <identifier>
 ```
 
 ### Tag Categories
 
-[Previous content about other tags continues...]
+#### Structural Tags
+
+1. SECTION
+   - Defines content boundaries
+   - Requires matching END tag
+   - Can be nested
+   - Identifies logical blocks
+
+Example:
+```
+### SECTION: authentication
+### SECTION: oauth
+OAuth implementation...
+### END: SECTION: oauth
+### END: SECTION: authentication
+```
+
+2. LINK
+   - Creates references
+   - Can target files/lines/sections
+   - Follows reference format
+   - Must reference valid targets
+
+Example:
+```
+### LINK: src/auth.py:42
+### LINK: config.ohno#initialization
+### LINK: ../lib/utils.ohno
+```
+
+#### Task Management Tags
+
+1. TODO/DONE
+```
+### TODO: Implement rate limiting
+Implementation needed...
+### DONE: 2024-12-17 14:30
+```
+
+2. FIXME
+```
+### FIXME: Memory leak in auth loop
+Details of the issue...
+### DONE: 2024-12-17 14:30
+```
+
+3. TRIAGE
+```
+### TRIAGE: Critical - Security vulnerability
+### TRIAGE: Medium - Performance issue
+### TRIAGE: Low - Documentation update
+```
+
+#### Documentation Tags
+
+1. NOTE
+```
+### NOTE: Based on OAuth 2.0 spec
+### NOTE: Requires secure connection
+```
+
+2. IDEA
+```
+### IDEA: Add cache layer
+### IDEA: Implement retry mechanism
+```
+
+3. REVIEW
+```
+### REVIEW: Security implications
+### REVIEW: Performance impact
+```
+
+#### Analysis Tags
+
+1. METRICS
+```
+### METRICS: 100ms 50MB 99.9%
+### METRICS: $50.00 24hrs 85%
+```
+
+2. FUNCTION
+```
+### FUNCTION: authenticate(user: str) -> bool
+### PURE: yes
+### EFFECTS: none
+```
+
+### Extension System
+
+#### Custom Tags
+Format: `@` prefix for custom tags
+```
+### @PERFORMANCE: Critical path
+### @SECURITY: Encryption required
+```
+
+#### Namespace Tags
+Format: namespace::tag
+```
+### TEAM::REVIEW: Architecture review
+### SEC::CHECK: Passed verification
+```
 
 ### Trust Verification
 
@@ -95,5 +256,25 @@ def verify_synopsis(file):
     assert matches_system_state(file.synopsis)
 ```
 
+#### Component Validation
+
+1. Structure Rules
+   - Required headers present
+   - Valid tag sequence
+   - Matched section tags
+   - Proper nesting
+
+2. Content Rules
+   - Valid field values
+   - Complete references
+   - Proper formats
+   - Consistent style
+
+3. Relationship Rules
+   - Logical tag flow
+   - Valid dependencies
+   - Proper closure
+   - Clear ownership
+
 ### Chapter Summary
-This chapter defines the core components of the Ohno Protocol, emphasizing the crucial role of the AI-generated SYNOPSIS as a mandatory trust layer between human metadata and content. This structure ensures objective system analysis and maintains the integrity of human-AI collaboration throughout the development process.
+This chapter defined the core components of the Ohno Protocol, emphasizing the crucial role of the AI-generated SYNOPSIS as a mandatory trust layer between human metadata and content. This structure ensures objective system analysis and maintains the integrity of human-AI collaboration throughout the development process. The chapter detailed the file structure, required headers, tag categories, extension system, and validation requirements that form the foundation of the protocol.
